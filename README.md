@@ -1,2 +1,2 @@
 # thesis-scripts
-Online supplementary material from the doctoral thesis of
+Online supplementary material from the doctoral thesis of Antoine Simon
