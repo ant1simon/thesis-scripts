@@ -49,79 +49,8 @@ Some steps require a great deal of memory (RAM) and may take a few days to run. 
 
 The data consists of four libraries treated under two different \textcolor{red}{red} conditions and using an **rRNA depletion** protocol:
 
-* <span style="color:blue">Cyanomorph (SW1, SW3)</span>
-* <span style="color:green">Chloromorph (SW5, SW9)</span>
-
-# Sampling
-
-*Dendriscosticta* samples were collected British Columbia (Canada) in June 2016:
-
-
-```r
-library(leaflet)
-library(leaflet.providers)
-
-Chloro <- makeIcon(
-  iconUrl = "~/Documents/Dendriscosticta/transcriptomics/NoteBook/chloromorph2.png",
-  iconWidth = 149, iconHeight = 200
-)
-
-Cyano <- makeIcon(
-  iconUrl = "~/Documents/Dendriscosticta/transcriptomics/NoteBook/cyanomorph2.png",
-  iconWidth = 149, iconHeight = 200
-)
-
-m <-leaflet() %>% addTiles() %>%
-  setView(-119.7635478, 52.2500829, zoom = 6) %>%
-  addMarkers(label = 'SW1 cyanomorph', icon = Cyano,
-    -121.0996054, 53.533508,
-    labelOptions = labelOptions(noHide = F, direction = "bottom",
-      style = list(
-        "color" = "black",
-        "font-family" = "serif",
-        "font-style" = "italic",
-        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-        "font-size" = "12px",
-        "border-color" = "rgba(0,0,0,0.5)"
-      ))) %>% 
-  addMarkers(label = 'SW3 cyanomorph', icon = Cyano,
-    -117.8205125, 50.6111166, 
-    labelOptions = labelOptions(noHide = F, direction = "bottom",
-      style = list(
-        "color" = "black",
-        "font-family" = "serif",
-        "font-style" = "italic",
-        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-        "font-size" = "12px",
-        "border-color" = "rgba(0,0,0,0.5)"
-      ))) %>% 
-  addMarkers(label = 'SW5 chloromorph', icon = Chloro,
-    -121.0996054, 53.533508, 
-    labelOptions = labelOptions(noHide = F, direction = "bottom",
-      style = list(
-        "color" = "black",
-        "font-family" = "serif",
-        "font-style" = "italic",
-        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-        "font-size" = "12px",
-        "border-color" = "rgba(0,0,0,0.5)"
-      ))) %>% 
-  addMarkers(label = 'SW9 chloromorph', icon = Chloro,
-    -117.8205125, 50.6111166, 
-    labelOptions = labelOptions(noHide = F, direction = "bottom",
-      style = list(
-        "color" = "black",
-        "font-family" = "serif",
-        "font-style" = "italic",
-        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-        "font-size" = "12px",
-        "border-color" = "rgba(0,0,0,0.5)"
-      ))) %>% 
-   addProviderTiles(providers$Stamen.TerrainBackground)
-
-m
-```
-
+* Cyanomorph (SW1, SW3)
+* Chloromorph (SW5, SW9)
 
 # Quality filtering using Trimmomatic<sup>&#9653;</sup> 
 
@@ -355,12 +284,12 @@ In the following script, we retrieve all the ORF labels that match the longest t
 infilename = "Transdecoder_identifier.pep"
 infile = open(infilename, 'r')
 infile_ncols = 1
-infile_nrows = 231639 ### change
+infile_nrows = 231639
 
 infile2name = "comp_lens.targets.longest_only.txt"
 infile2 = open(infile2name, 'r')
 infile2_ncols = 3
-infile2_nrows = 95981 ### change
+infile2_nrows = 95981
 
 outfilename = "target_orfs.from_longest_only.txt"
 OUT = open(outfilename, 'w')
@@ -898,11 +827,11 @@ done
 
 ```
 
-# Performing differential expression analysis {.tabset .tabset-fade}
+# Performing differential expression analysis
 
 Differential expression between the photomorph types, which can also reflect dissimilar cell abundances, was assessed using the Bioconductor package [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) and Fisher's exact test. In each putative taxonomic subset, only transcripts with counts per million (CPM) of 20 or greater for at least two samples were included in the analysis. Additionally, samples were clustered in a multidimensional scaling plot (MDS) using the plotMDS function implemented in the Bioconductor package [limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html) in order to assess the adequacy of the differential expression analyses.
 
-## Fungi
+### Fungi
 
 
 ```r
@@ -911,9 +840,48 @@ outputPrefix <- "edgeR"
 setwd(directory)
 library(plyr)
 library(edgeR)
+```
+
+```
+## Loading required package: limma
+```
+
+```r
 library(ggplot2)
 library(randomcoloR)
 library(plotly)
+```
+
+```
+## 
+## Attaching package: 'plotly'
+```
+
+```
+## The following object is masked from 'package:ggplot2':
+## 
+##     last_plot
+```
+
+```
+## The following objects are masked from 'package:plyr':
+## 
+##     arrange, mutate, rename, summarise
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     filter
+```
+
+```
+## The following object is masked from 'package:graphics':
+## 
+##     layout
+```
+
+```r
 library(bsselectR)
 library(stringr)
 
@@ -931,41 +899,170 @@ Identifier <- data.frame(read.table("identifier.txt",sep="\t", header = FALSE))
 #####edgeR
 d <- DGEList(counts=eXpress,group=factor(sampleCondition))
 d
+```
 
+```
+## An object of class "DGEList"
+## $counts
+##   Sw1 Sw3 Sw5 Sw9
+## 1   0  15   0   0
+## 2   2   2   8   3
+## 3   2   6   2   3
+## 4   0  30   1   0
+## 5   0   0   1   6
+## 14728 more rows ...
+## 
+## $samples
+##           group lib.size norm.factors
+## Sw1  Cyanomorph  1063264            1
+## Sw3  Cyanomorph  2283355            1
+## Sw5 Chloromorph  6154203            1
+## Sw9 Chloromorph  5033096            1
+```
+
+```r
 dim(d)
+```
+
+```
+## [1] 14733     4
+```
+
+```r
 d.full <- d
 head(d$counts)
+```
 
+```
+##   Sw1 Sw3 Sw5 Sw9
+## 1   0  15   0   0
+## 2   2   2   8   3
+## 3   2   6   2   3
+## 4   0  30   1   0
+## 5   0   0   1   6
+## 6   0   5   6   8
+```
+
+```r
 head(cpm(d))
+```
 
+```
+##     Sw1        Sw3       Sw5       Sw9
+## 1 0.000  6.5692807 0.0000000 0.0000000
+## 2 1.881  0.8759041 1.2999246 0.5960546
+## 3 1.881  2.6277123 0.3249812 0.5960546
+## 4 0.000 13.1385615 0.1624906 0.0000000
+## 5 0.000  0.0000000 0.1624906 1.1921092
+## 6 0.000  2.1897602 0.9749435 1.5894789
+```
+
+```r
 apply(d$counts, 2, sum)
+```
 
+```
+##     Sw1     Sw3     Sw5     Sw9 
+## 1063264 2283355 6154203 5033096
+```
+
+```r
 keep <- rowSums(cpm(d)>20) >= 2
 d <- d[keep,]
 dim(d)
+```
 
+```
+## [1] 7697    4
+```
+
+```r
 Tax <- Tax[keep,]
 Identifier <- Identifier[keep,]
 
 d$samples$lib.size <- colSums(d$counts)
 d$samples
+```
 
+```
+##           group lib.size norm.factors
+## Sw1  Cyanomorph  1011372            1
+## Sw3  Cyanomorph  2189222            1
+## Sw5 Chloromorph  5967295            1
+## Sw9 Chloromorph  4889117            1
+```
+
+```r
 #Normalizing the data
 d <- calcNormFactors(d)
 d
+```
 
+```
+## An object of class "DGEList"
+## $counts
+##      Sw1 Sw3  Sw5  Sw9
+## 58    51  72  406  331
+## 104  108 102    2    5
+## 203 1899 735 2235 3305
+## 228  262  69   29   86
+## 254   70  65    5    6
+## 7692 more rows ...
+## 
+## $samples
+##           group lib.size norm.factors
+## Sw1  Cyanomorph  1011372    0.8336531
+## Sw3  Cyanomorph  2189222    0.9745202
+## Sw5 Chloromorph  5967295    1.1292373
+## Sw9 Chloromorph  4889117    1.0900304
+```
+
+```r
 #Data Exploration
 
 colors <- rep(c("green4", "blue4"), 2)
 plotMDS(d, method="bcv", col=colors[d$samples$group])
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-1.png)<!-- -->
+
+```r
 #Estimating the Dispersion
 d1 <- estimateCommonDisp(d, verbose=T)
+```
+
+```
+## Disp = 0.0934 , BCV = 0.3056
+```
+
+```r
 names(d1)
+```
+
+```
+## [1] "counts"            "samples"           "common.dispersion"
+## [4] "pseudo.counts"     "pseudo.lib.size"   "AveLogCPM"
+```
+
+```r
 d1 <- estimateTagwiseDisp(d1)
 names(d1)
-plotBCV(d1)
+```
 
+```
+##  [1] "counts"             "samples"            "common.dispersion" 
+##  [4] "pseudo.counts"      "pseudo.lib.size"    "AveLogCPM"         
+##  [7] "prior.df"           "prior.n"            "tagwise.dispersion"
+## [10] "span"
+```
+
+```r
+plotBCV(d1)
+```
+
+![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-2.png)<!-- -->
+
+```r
 #Differential Expression
 
 et12 <- exactTest(d1, pair=c(1,2)) # compare groups 1 and 2
@@ -990,17 +1087,34 @@ write.table(DOWN, "DOWN.txt", row.names=FALSE, col.names = FALSE, quote=FALSE, s
 
 de1 <- decideTestsDGE(et12, adjust.method="BH", p.value=0.05)
 summary(de1)
+```
 
+```
+##        Cyanomorph-Chloromorph
+## Down                      390
+## NotSig                   6916
+## Up                        391
+```
+
+```r
 # Taxonomy
 Tax_unlisted <- unlist(Tax, use.names = FALSE)
 plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-3.png)<!-- -->
+
+```r
 # P-values , 0.05
 de1tags12 <- rownames(d1)[as.logical(de1)] 
 plotSmear(et12, de.tags=de1tags12, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-4.png)<!-- -->
+
+```r
 n <- 19
 palette_random <- distinctColorPalette(n)
 
@@ -1018,12 +1132,19 @@ q <- p + theme_bw() +
   theme(axis.line = element_line(color = "black")) + 
   #add horizontal lines
   geom_hline(yintercept=2, color = "grey") +
-  geom_hline(yintercept=-2, color = "grey") #+
+  geom_hline(yintercept=-2, color = "grey")
 
-ggplotly(q)
+plot(q)
 ```
 
-## Bacteria (no cyanobacteria)
+![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-5.png)<!-- -->
+
+```r
+# Uncomment for interactive graphs:
+# ggplotly(q)
+```
+
+### Bacteria (no cyanobacteria)
 
 
 ```r
@@ -1053,163 +1174,170 @@ Identifier <- data.frame(read.table("identifier.txt",sep="\t", header = FALSE))
 #####edgeR
 d <- DGEList(counts=eXpress,group=factor(sampleCondition))
 d
-
-dim(d)
-d.full <- d
-head(d$counts)
-
-head(cpm(d))
-
-apply(d$counts, 2, sum)
-
-keep <- rowSums(cpm(d)>20) >= 2
-d <- d[keep,]
-dim(d)
-
-Tax <- Tax[keep,]
-Identifier <- Identifier[keep,]
-
-d$samples$lib.size <- colSums(d$counts)
-d$samples
-
-#Normalizing the data
-d <- calcNormFactors(d)
-d
-
-#Data Exploration
-
-colors <- rep(c("green4", "blue4"), 2)
-plotMDS(d, method="bcv", col=colors[d$samples$group])
-
-#Estimating the Dispersion
-d1 <- estimateCommonDisp(d, verbose=T)
-names(d1)
-d1 <- estimateTagwiseDisp(d1)
-names(d1)
-plotBCV(d1)
-
-#Differential Expression
-
-et12 <- exactTest(d1, pair=c(1,2)) # compare groups 1 and 2
-
-#FDR and save
-DEG_out <- topTags(et12, n = "Inf")$table
-Identifier_frame <- as.data.frame(Identifier)
-DEG_out <- DEG_out[order(as.numeric(rownames(DEG_out))),,drop=FALSE]
-Pairwise_results <- cbind(Identifier_frame, DEG_out)
-colnames(Pairwise_results)[1] <- "Name"
-write.table(Pairwise_results, "Pairwise_results.txt", row.names=FALSE, quote=FALSE, sep='\t')
-UP_DOWN <- Pairwise_results[(Pairwise_results[,5]<0.05),]
-
-UP <- UP_DOWN[(UP_DOWN[,2]>0),]
-DOWN <- UP_DOWN[(UP_DOWN[,2]<0),]
-
-UP <- UP[1]
-DOWN <- DOWN[1]
-
-write.table(UP, "UP.txt", row.names=FALSE, col.names = FALSE, quote=FALSE, sep='\t')
-write.table(DOWN, "DOWN.txt", row.names=FALSE, col.names = FALSE, quote=FALSE, sep='\t')
-
-de1 <- decideTestsDGE(et12, adjust.method="BH", p.value=0.05)
-summary(de1)
-
-# Taxonomy
-Tax_unlisted <- unlist(Tax, use.names = FALSE)
-plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
-abline(h = c(-2, 2), col = "blue")
-
-# P-values , 0.05
-de1tags12 <- rownames(d1)[as.logical(de1)] 
-plotSmear(et12, de.tags=de1tags12, cex=0.7, col="grey")
-abline(h = c(-2, 2), col = "blue")
-
-n <- 19
-palette_random <- distinctColorPalette(n)
-
-p =ggplot(et12$table, aes(logCPM, logFC, col=Tax, text=Identifier)) + geom_point(alpha=0.55) + scale_colour_manual(values=c(palette_random))
-
-q <- p + theme_bw() +
-  #eliminates background, gridlines, and chart border
-  theme(
-    plot.background = element_blank()
-    ,panel.grid.major = element_blank()
-    ,panel.grid.minor = element_blank()
-    ,panel.border = element_blank()
-  ) +
-  #draws x and y axis line
-  theme(axis.line = element_line(color = "black")) + 
-  #add horizontal lines
-  geom_hline(yintercept=2, color = "grey") +
-  geom_hline(yintercept=-2, color = "grey") #+
-
-ggplotly(q)
 ```
 
-## Bacteria
-
+```
+## An object of class "DGEList"
+## $counts
+##   Sw1 Sw3 Sw5 Sw9
+## 1   0   5   2   3
+## 2   0   0   8   3
+## 3   3   1   1   1
+## 4   1  10   0   0
+## 5   0   3   1   1
+## 17195 more rows ...
+## 
+## $samples
+##           group lib.size norm.factors
+## Sw1  Cyanomorph   468744            1
+## Sw3  Cyanomorph   589224            1
+## Sw5 Chloromorph   592112            1
+## Sw9 Chloromorph   488269            1
+```
 
 ```r
-directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Bacteria/"
-
-outputPrefix <- "edgeR"
-setwd(directory)
-library(plyr)
-library(edgeR)
-library(ggplot2)
-library(randomcoloR)
-library(plotly)
-library(bsselectR)
-library(stringr)
-
-sampleCondition <- c("Cyanomorph", 
-                     "Cyanomorph", 
-                     "Chloromorph", 
-                     "Chloromorph")
-                     
-eXpress <- data.frame(read.table("results_ALL.txt",sep="\t", header = TRUE))
-
-Tax <- data.frame(read.table("Tax_ALL.txt",sep="\t", header = FALSE))
-
-Identifier <- data.frame(read.table("identifier.txt",sep="\t", header = FALSE))
-
-#####edgeR
-d <- DGEList(counts=eXpress,group=factor(sampleCondition))
-d
-
 dim(d)
+```
+
+```
+## [1] 17200     4
+```
+
+```r
 d.full <- d
 head(d$counts)
+```
 
+```
+##   Sw1 Sw3 Sw5 Sw9
+## 1   0   5   2   3
+## 2   0   0   8   3
+## 3   3   1   1   1
+## 4   1  10   0   0
+## 5   0   3   1   1
+## 6   1  10   0   0
+```
+
+```r
 head(cpm(d))
+```
 
+```
+##        Sw1       Sw3       Sw5      Sw9
+## 1 0.000000  8.485737  3.377739 6.144154
+## 2 0.000000  0.000000 13.510957 6.144154
+## 3 6.400082  1.697147  1.688870 2.048051
+## 4 2.133361 16.971474  0.000000 0.000000
+## 5 0.000000  5.091442  1.688870 2.048051
+## 6 2.133361 16.971474  0.000000 0.000000
+```
+
+```r
 apply(d$counts, 2, sum)
+```
 
+```
+##    Sw1    Sw3    Sw5    Sw9 
+## 468744 589224 592112 488269
+```
+
+```r
 keep <- rowSums(cpm(d)>20) >= 2
 d <- d[keep,]
 dim(d)
+```
 
+```
+## [1] 2764    4
+```
+
+```r
 Tax <- Tax[keep,]
 Identifier <- Identifier[keep,]
 
 d$samples$lib.size <- colSums(d$counts)
 d$samples
+```
 
+```
+##           group lib.size norm.factors
+## Sw1  Cyanomorph   439799            1
+## Sw3  Cyanomorph   486365            1
+## Sw5 Chloromorph   521356            1
+## Sw9 Chloromorph   434635            1
+```
+
+```r
 #Normalizing the data
 d <- calcNormFactors(d)
 d
+```
 
+```
+## An object of class "DGEList"
+## $counts
+##      Sw1  Sw3 Sw5 Sw9
+## 26    45   59 461 218
+## 61     1   14   0  13
+## 89  6246 2711 425 533
+## 127 1921 1145 117 140
+## 135 1032 2782  98 170
+## 2759 more rows ...
+## 
+## $samples
+##           group lib.size norm.factors
+## Sw1  Cyanomorph   439799    0.6375632
+## Sw3  Cyanomorph   486365    1.0267543
+## Sw5 Chloromorph   521356    1.1806952
+## Sw9 Chloromorph   434635    1.2938157
+```
+
+```r
 #Data Exploration
 
 colors <- rep(c("green4", "blue4"), 2)
 plotMDS(d, method="bcv", col=colors[d$samples$group])
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-1.png)<!-- -->
+
+```r
 #Estimating the Dispersion
 d1 <- estimateCommonDisp(d, verbose=T)
+```
+
+```
+## Disp = 0.44695 , BCV = 0.6685
+```
+
+```r
 names(d1)
+```
+
+```
+## [1] "counts"            "samples"           "common.dispersion"
+## [4] "pseudo.counts"     "pseudo.lib.size"   "AveLogCPM"
+```
+
+```r
 d1 <- estimateTagwiseDisp(d1)
 names(d1)
-plotBCV(d1)
+```
 
+```
+##  [1] "counts"             "samples"            "common.dispersion" 
+##  [4] "pseudo.counts"      "pseudo.lib.size"    "AveLogCPM"         
+##  [7] "prior.df"           "prior.n"            "tagwise.dispersion"
+## [10] "span"
+```
+
+```r
+plotBCV(d1)
+```
+
+![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-2.png)<!-- -->
+
+```r
 #Differential Expression
 
 et12 <- exactTest(d1, pair=c(1,2)) # compare groups 1 and 2
@@ -1234,17 +1362,34 @@ write.table(DOWN, "DOWN.txt", row.names=FALSE, col.names = FALSE, quote=FALSE, s
 
 de1 <- decideTestsDGE(et12, adjust.method="BH", p.value=0.05)
 summary(de1)
+```
 
+```
+##        Cyanomorph-Chloromorph
+## Down                      609
+## NotSig                   1728
+## Up                        427
+```
+
+```r
 # Taxonomy
 Tax_unlisted <- unlist(Tax, use.names = FALSE)
 plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-3.png)<!-- -->
+
+```r
 # P-values , 0.05
 de1tags12 <- rownames(d1)[as.logical(de1)] 
 plotSmear(et12, de.tags=de1tags12, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
+```
 
+![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-4.png)<!-- -->
+
+```r
 n <- 19
 palette_random <- distinctColorPalette(n)
 
@@ -1264,10 +1409,19 @@ q <- p + theme_bw() +
   geom_hline(yintercept=2, color = "grey") +
   geom_hline(yintercept=-2, color = "grey") #+
 
-ggplotly(q)
+plot(q)
 ```
 
-# Whaat?
+![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-5.png)<!-- -->
+
+```r
+# Uncomment for interactive graphs:
+# ggplotly(q)
+```
+
+# Plotting the abundance values of all Rhizobiales transcripts
+
+The following chunks allow to build violin plots representing abundance values (based on total read counts estimated by [eXpress](https://pachterlab.github.io/eXpress/)) of all Rhizobiales transcripts of all four metatranscriptomes arranged by the number of individual metatranscriptomes in which they were recorded (i.e., four rows). Each individual plot shows sample (x) plotted against log mean abundance per transcript (y).
 
 
 ```python
@@ -1324,9 +1478,6 @@ with file('Rhizobiales/binary-sw.txt', 'r') as original: data = original.read()
 with file('Rhizobiales/binary-sw.txt', 'w') as modified: modified.write("Sw1\tSw3\tSw5\tSw9\tfreq\t\n" + data)
 ```
 
-# Plotting the abundance values of all Rhizobiales transcripts
-
-Violin plots representing abundance values (based on total read counts estimated by [eXpress](https://pachterlab.github.io/eXpress/)) of all Rhizobiales transcripts of all four metatranscriptomes arranged by the number of individual metatranscriptomes in which they were recorded (i.e., four rows). Each individual plot shows sample (x) plotted against log mean abundance per transcript (y).
 
 
 ```r
@@ -1336,8 +1487,48 @@ setwd(directory)
 library(ggplot2)
 library(reshape2)
 library(tidyr)
-library(dplyr)
+```
 
+```
+## 
+## Attaching package: 'tidyr'
+```
+
+```
+## The following object is masked from 'package:reshape2':
+## 
+##     smiths
+```
+
+```r
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:plyr':
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 # possibly change the directory!
 d <- read.delim(file="binary-sw.txt", header=TRUE, row.names = NULL)
 
@@ -1374,11 +1565,19 @@ p<-ggplot(d.long.df, aes(sample, log10(transcript_abundance_values), color=sampl
 
 pdf("violin.pdf", height=5, width=7)
 p+scale_color_manual(values=c("blue", "blue", "green","green"))
+```
 
+```
+## Warning: Removed 3022 rows containing non-finite values (stat_ydensity).
+```
 
-#enlever grid and legend
-
+```r
 dev.off()
+```
+
+```
+## quartz_off_screen 
+##                 2
 ```
 
 # Creating an input file suitable for functional annotation
@@ -1388,24 +1587,9 @@ But first, the DIAMOND blast results had to be generated in XML format, so that 
 
 
 ```r
-#scp asimon@transfer.cam.uchc.edu:/home/CAM/asimon/sw/best_orfs_Trinity.fasta .
+module load /isg/shared/modulefiles/diamond/0.9.9
 
-#!/bin/sh
-#SBATCH --job-name=grep_fungi_diamond_b2g_sw_CDS
-#SBATCH -N 1
-#SBATCH -n 1
-#SBATCH -c 18
-#SBATCH --partition=himem
-#SBATCH --qos=himem
-#SBATCH --mail-type=END
-#SBATCH --mem=120G
-#SBATCH --mail-user=asimon@doct.ulg.ac.be
-#SBATCH -o grep_fungi_diamond_b2g_sw_CDS_%j.out
-#SBATCH -e grep_fungi_diamond_b2g_sw_CDS_%j.err
-
-#module load /isg/shared/modulefiles/diamond/0.9.9
-
-#diamond blastx -d ~/tempdata3/antoine/nt_diamond/nr -q ~/sw/transdecoder/Trinity.fasta.transdecoder.cds  -o ~/sw/Diamond_b2g_CDS.xml --taxonmap ~/home/antoine_simon/database/prot.accession2taxid.gz -e 1e-6 -p 8 -f 5 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids -k 1
+diamond blastx -d ~/tempdata3/antoine/nt_diamond/nr -q ~/sw/transdecoder/Trinity.fasta.transdecoder.cds  -o ~/sw/Diamond_b2g_CDS.xml --taxonmap ~/home/antoine_simon/database/prot.accession2taxid.gz -e 1e-6 -p 8 -f 5 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids -k 1
 
 for n in `cat sw/header_fungi.txt `; do LC_ALL=C fgrep "$n:" sw/Diamond_b2g_CDS.xml -B3 -A43 ; done > sw/Diamond_b2g_CDS_fungi.xml
 ```
@@ -1414,7 +1598,7 @@ for n in `cat sw/header_fungi.txt `; do LC_ALL=C fgrep "$n:" sw/Diamond_b2g_CDS.
 
 The following script was used to combine the results of the GO enrichment and DEG analyses by building a heatmap displaying the most specific enriched Gene Ontology (GO) terms identified for statistically-significant fungal transcripts. Enriched terms and transcripts are organized by hierarchical clustering. DEG significance scores correspond to the logarithm of the fold change (logFC) between photomorphs (down: chloromorphs; up: cyanomorphs). GO term significance scores correspond the negative logarithm of P-values evaluating the significance of GO terms.
 
-## Fungi
+### Fungi
 
 
 ```r
@@ -1422,42 +1606,18 @@ The following script was used to combine the results of the GO enrichment and DE
 
 directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Fungi/"
 setwd(directory)
-library("viridis")
+
 library("ComplexHeatmap")
 require("circlize")
-#BiocManager::install("ComplexHeatmap")
-
-#system('defaults write org.R-project.R force.LANG en_US.UTF-8')
-
-#https://www.biostars.org/u/41557/
-#https://www.biostars.org/p/299161/
-#https://bioinformatics.stackexchange.com/questions/5338/go-term-heatmap-plot-in-terms-of-p-value-or-fold-enrichment
-
-#Filter genes that pass absolute log (base2) fold change >= 4 and FDR (BH) Q<=0.0001
-  
-#Edger_output <- data.frame(read.table("Pairwise_results.txt", sep = "\t", header = TRUE))
-
-
-#log2FCcutoff <- 2.5
-#BHcutoff <- 0.05
-#sigGeneList <- subset(Pairwise_results, abs(logFC)>=log2FCcutoff & PValue<=BHcutoff)[,1]
-
-#write.table(sigGeneList, "sigGeneList.txt", sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
-
-#Filter genes that pass absolute log (base2) fold change >= 4 and FDR (BH) Q<=0.0001
-  
-#DESeq_output <- data.frame(read.table("edger_paired_b2g_2.txt", sep = "\t", header = TRUE))
+library("viridis")
 
 Pairwise_results <- cbind(Identifier_frame, DEG_out)
 colnames(Pairwise_results)[1] <- "Name"
 
-log2FCcutoff <- 1.5
+log2FCcutoff <- 0.05
 BHcutoff <- 0.05
 sigGeneList <- subset(Pairwise_results, abs(logFC)>=log2FCcutoff & PValue<=BHcutoff)[,1]
 
-#write.table(sigGeneList, "sigGeneList.txt", sep = "\t", row.names = TRUE, col.names = FALSE, quote = FALSE)
-
-#NOTE TO MYSELF: THIS SCRIPT MUST BE RUN JUST AFTER THE FUNGUS EDGER SCRIPT
 DAVIDfile <- "DEG_specific20for2_removed_too_general.txt"
 DAVID <- read.table(DAVIDfile, sep="\t", header=TRUE)
 colnames(DAVID)
@@ -1476,17 +1636,10 @@ enrichBcutoff <- 1e-02 # should be way smaller
 #DAVID <- subset(DAVID, P_Value<enrichBcutoff)
 DAVID <- DAVID[,c(4,3,7,11)]
 
-#Pull out only terms with WNT genes
-#DAVID <- DAVID[grep("WNT", DAVID[,4]),]
-
 #Create a new dataframe that has '1' for when the gene is part of a term, and '0' when not
 annGSEA <- data.frame(row.names=sigGeneList)
 for (j in 1:length(sigGeneList))
 {
-  #Create a matching pattern to ensure genes match exactly
-  #   ^GENE,  --> Match at beginning of matching string
-  #   , GENE$ --> Match at end of matching string
-  #    GENE,  --> Match between first and last gene in matching string
   gene <- sigGeneList[j]
   pattern <- paste("^", gene, ", |, ", gene, "$| ", gene, ",", sep="")
   for (k in 1:nrow(DAVID))
@@ -1518,7 +1671,7 @@ geneLab=6
 termLab=8
 
 #Create heatmap annotations
-#Colour bar for -log (base 10) FDR Q value for DEGs, and fold changes
+#Color bar for fold changes
 dfMinusLog10FDRGenes <- data.frame(abs(Pairwise_results[which(Pairwise_results[,1] %in% rownames(annGSEA)),"logFC"]))
 dfMinusLog10FDRGenes[dfMinusLog10FDRGenes=="Inf"] <- 0
 dfFoldChangeGenes <- data.frame(Pairwise_results[which(Pairwise_results[,1] %in% rownames(annGSEA)),"logFC"])
@@ -1528,14 +1681,13 @@ colnames(dfGeneAnno) <- c("DEG\nsignificance\nscore", "Regulation")
 colours <- list("Regulation"=c("Cyanomorph"="blue4", "Chloromorph"="green4"))
 haGenes <- rowAnnotation(df=dfGeneAnno, col=colours, width=unit(1,"cm"))
 
-#Colour bar for -log (base 10) Benjamini enrichment Q value
+#Color bar for GO Term significance score
 dfMinusLog10BenjaminiTerms <- data.frame(-log10(read.table(DAVIDfile, sep="\t", header=TRUE)[which(read.table(DAVIDfile, sep="\t", header=TRUE)$GO_Name %in% colnames(annGSEA)),"P_Value"]))
 colnames(dfMinusLog10BenjaminiTerms) <- "GO Term\nsignificance\nscore"
-col_viridis = colorRamp2(c(2.14, 1.2), plasma(2)) 
+col_viridis = colorRamp2(c(2.63, 1.2), viridis(2)) 
 haTerms <- HeatmapAnnotation(df = dfMinusLog10BenjaminiTerms, col = list(`GO Term
 significance
 score` = col_viridis), colname=anno_text(colnames(annGSEA), rot=40, just="right", location=unit(1,"npc")-unit(2,"mm"), gp=gpar(fontsize=termLab)), annotation_height=unit.c(unit(1, "cm"), unit(8, "cm")))
-#haTerms <- HeatmapAnnotation(df = dfMinusLog10BenjaminiTerms,  colname=anno_text(colnames(annGSEA), rot=40, just="right", location=unit(1,"npc")-unit(2,"mm"), gp=gpar(fontsize=termLab)), annotation_height=unit.c(unit(1, "cm"), unit(8, "cm")))
 
 pdf("GO.pdf", width=12, height=10)
 hmapGSEA <- Heatmap(annGSEA,
@@ -1567,12 +1719,7 @@ hmapGSEA <- Heatmap(annGSEA,
                     column_title_gp=gpar(fontsize=12, fontface="bold"),
                     column_title_rot=0,
                     show_column_names=FALSE,
-                    #column_names_gp=gpar(fontsize=termLab, fontface="bold"),
-                    #column_names_max_height=unit(15, "cm"),
-                    
                     show_heatmap_legend=FALSE,
-                    
-                    #width=unit(12.5, "cm"),
                     
                     clustering_distance_columns="euclidean",
                     clustering_method_columns="ward.D2",
@@ -1582,186 +1729,7 @@ hmapGSEA <- Heatmap(annGSEA,
                     bottom_annotation=haTerms)
 
 draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="right")
-dev.off()
-
-png(filename = "testPlot.png", width = 3880, height = 3880, res = 300)
-hmapGSEA + haGenes
 dev.off()
 ```
 
 ![](/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Fungi/heatmap.png)
-
-## Bacteria (no cyanobacteria)
-
-
-```r
-directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Bacteria-no-cyano//"
-setwd(directory)
-library("viridis")
-library("ComplexHeatmap")
-require("circlize")
-#BiocManager::install("ComplexHeatmap")
-
-#system('defaults write org.R-project.R force.LANG en_US.UTF-8')
-
-#https://www.biostars.org/u/41557/
-#https://www.biostars.org/p/299161/
-#https://bioinformatics.stackexchange.com/questions/5338/go-term-heatmap-plot-in-terms-of-p-value-or-fold-enrichment
-
-#Filter genes that pass absolute log (base2) fold change >= 4 and FDR (BH) Q<=0.0001
-  
-#Edger_output <- data.frame(read.table("Pairwise_results.txt", sep = "\t", header = TRUE))
-
-
-#log2FCcutoff <- 2.5
-#BHcutoff <- 0.05
-#sigGeneList <- subset(Pairwise_results, abs(logFC)>=log2FCcutoff & PValue<=BHcutoff)[,1]
-
-#write.table(sigGeneList, "sigGeneList.txt", sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
-
-#Filter genes that pass absolute log (base2) fold change >= 4 and FDR (BH) Q<=0.0001
-  
-#DESeq_output <- data.frame(read.table("edger_paired_b2g_2.txt", sep = "\t", header = TRUE))
-
-Pairwise_results <- cbind(Identifier_frame, DEG_out)
-colnames(Pairwise_results)[1] <- "Name"
-
-log2FCcutoff <- 1.5
-BHcutoff <- 0.05
-sigGeneList <- subset(Pairwise_results, abs(logFC)>=log2FCcutoff & PValue<=BHcutoff)[,1]
-
-#write.table(sigGeneList, "sigGeneList.txt", sep = "\t", row.names = TRUE, col.names = FALSE, quote = FALSE)
-
-#NOTE TO MYSELF: THIS SCRIPT MUST BE RUN JUST AFTER THE FUNGUS EDGER SCRIPT
-DAVIDfile <- "DEG_specific20for2.txt"
-DAVID <- read.table(DAVIDfile, sep="\t", header=TRUE)
-colnames(DAVID)
-
-names(DAVID)[3] <- "GO_Name"
-names(DAVID)[6] <- "P_Value"
-names(DAVID)[11] <- "TestSet_Sequences"
-colnames(DAVID)
-DAVID$TestSet_Sequences <- gsub(';', ', ', DAVID$TestSet_Sequences)
-DAVID$TestSet_Sequences <- gsub('$', ', x', DAVID$TestSet_Sequences)
-write.table(DAVID, "omicsbox_table2.txt", sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
-DAVIDfile <- "omicsbox_table2.txt"
-
-#Enrichment cut-off
-enrichBcutoff <- 1e-02 # should be way smaller
-#DAVID <- subset(DAVID, P_Value<enrichBcutoff)
-DAVID <- DAVID[,c(4,3,7,11)]
-
-#Pull out only terms with WNT genes
-#DAVID <- DAVID[grep("WNT", DAVID[,4]),]
-
-#Create a new dataframe that has '1' for when the gene is part of a term, and '0' when not
-annGSEA <- data.frame(row.names=sigGeneList)
-for (j in 1:length(sigGeneList))
-{
-  #Create a matching pattern to ensure genes match exactly
-  #   ^GENE,  --> Match at beginning of matching string
-  #   , GENE$ --> Match at end of matching string
-  #    GENE,  --> Match between first and last gene in matching string
-  gene <- sigGeneList[j]
-  pattern <- paste("^", gene, ", |, ", gene, "$| ", gene, ",", sep="")
-  for (k in 1:nrow(DAVID))
-  {
-    if (any(grepl(pattern, DAVID$TestSet_Sequences[k])))
-    {
-      annGSEA[j,k] <- 1
-    }
-    else
-    {
-      annGSEA[j,k] <- 0
-    }
-  }
-}
-colnames(annGSEA) <- DAVID[,2]
-
-#Remove terms with no overlapping genes
-annGSEA <- annGSEA[,apply(annGSEA, 2, mean)!=0]
-
-#Remove genes with no overlapping terms
-annGSEA <- annGSEA[apply(annGSEA, 1, mean)!=0,]
-
-#Match the order of rownames in DESeq_output with that of annGSEA
-Pairwise_results <- Pairwise_results[which(Pairwise_results$Name %in% rownames(annGSEA)),]
-Pairwise_results <- Pairwise_results[match(rownames(annGSEA), Pairwise_results$Name),]
-
-#Set text and figure dimensions
-geneLab=6
-termLab=8
-
-#Create heatmap annotations
-#Colour bar for -log (base 10) FDR Q value for DEGs, and fold changes
-dfMinusLog10FDRGenes <- data.frame(abs(Pairwise_results[which(Pairwise_results[,1] %in% rownames(annGSEA)),"logFC"]))
-dfMinusLog10FDRGenes[dfMinusLog10FDRGenes=="Inf"] <- 0
-dfFoldChangeGenes <- data.frame(Pairwise_results[which(Pairwise_results[,1] %in% rownames(annGSEA)),"logFC"])
-dfGeneAnno <- data.frame(dfMinusLog10FDRGenes, dfFoldChangeGenes)
-dfGeneAnno[,2] <- ifelse(dfGeneAnno[,2]>0, "Cyanomorph", "Chloromorph")
-colnames(dfGeneAnno) <- c("DEG\nsignificance\nscore", "Regulation")
-colours <- list("Regulation"=c("Cyanomorph"="blue4", "Chloromorph"="green4"))
-haGenes <- rowAnnotation(df=dfGeneAnno, col=colours, width=unit(1,"cm"))
-
-#Colour bar for -log (base 10) Benjamini enrichment Q value
-dfMinusLog10BenjaminiTerms <- data.frame(-log10(read.table(DAVIDfile, sep="\t", header=TRUE)[which(read.table(DAVIDfile, sep="\t", header=TRUE)$GO_Name %in% colnames(annGSEA)),"P_Value"]))
-colnames(dfMinusLog10BenjaminiTerms) <- "GO Term\nsignificance\nscore"
-col_viridis = colorRamp2(c(2.14, 1.2), plasma(2)) 
-haTerms <- HeatmapAnnotation(df = dfMinusLog10BenjaminiTerms, col = list(`GO Term
-significance
-score` = col_viridis), colname=anno_text(colnames(annGSEA), rot=40, just="right", location=unit(1,"npc")-unit(2,"mm"), gp=gpar(fontsize=termLab)), annotation_height=unit.c(unit(1, "cm"), unit(8, "cm")))
-#haTerms <- HeatmapAnnotation(df = dfMinusLog10BenjaminiTerms,  colname=anno_text(colnames(annGSEA), rot=40, just="right", location=unit(1,"npc")-unit(2,"mm"), gp=gpar(fontsize=termLab)), annotation_height=unit.c(unit(1, "cm"), unit(8, "cm")))
-
-pdf("GO.pdf", width=12, height=10)
-hmapGSEA <- Heatmap(annGSEA,
-                    
-                    name="My enrichment",
-                    
-                    split=dfGeneAnno[,2],
-                    
-                    col=c("0"="white", "1"="grey45"),
-                    
-                    rect_gp=gpar(col="grey85"),
-                    
-                    cluster_rows=T,
-                    show_row_dend=T,
-                    row_title="Statistically-significant genes",
-                    row_title_side="left",
-                    row_title_gp=gpar(fontsize=12, fontface="bold"),
-                    row_title_rot=0,
-                    show_row_names=TRUE,
-                    row_names_gp=gpar(fontsize=geneLab, fontface="bold"),
-                    row_names_side="left",
-                    row_names_max_width=unit(15, "cm"),
-                    row_dend_width=unit(10,"mm"),
-                    
-                    cluster_columns=T,
-                    show_column_dend=T,
-                    column_title="Enriched terms",
-                    column_title_side="top",
-                    column_title_gp=gpar(fontsize=12, fontface="bold"),
-                    column_title_rot=0,
-                    show_column_names=FALSE,
-                    #column_names_gp=gpar(fontsize=termLab, fontface="bold"),
-                    #column_names_max_height=unit(15, "cm"),
-                    
-                    show_heatmap_legend=FALSE,
-                    
-                    #width=unit(12.5, "cm"),
-                    
-                    clustering_distance_columns="euclidean",
-                    clustering_method_columns="ward.D2",
-                    clustering_distance_rows="euclidean",
-                    clustering_method_rows="ward.D2",
-                    
-                    bottom_annotation=haTerms)
-
-draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="right")
-dev.off()
-
-png(filename = "testPlot.png", width = 3880, height = 3880, res = 300)
-hmapGSEA + haGenes
-dev.off()
-```
-
-![](/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Bacteria-no-cyano/heatmap.png)
