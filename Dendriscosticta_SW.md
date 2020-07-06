@@ -1589,7 +1589,7 @@ dev.off()
 ##                 2
 ```
 
-![](Dendriscosticta_SW_files/figure-html/violin.pdf)<!-- -->
+![](Dendriscosticta_SW_files/figure-html/violins.png)<!-- -->
 
 <a name="17"/>
 
