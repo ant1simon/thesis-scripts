@@ -1202,7 +1202,7 @@ plot(q)
 ![](Dendriscosticta_AS_files/figure-html/edgeR-5.png)<!-- -->
 
 ```r
-# Uncomment for non-interactive graphs:
+# Uncomment for interactive graphs:
 # ggplotly(q)
 ```
 
