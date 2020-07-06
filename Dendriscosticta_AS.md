@@ -29,7 +29,7 @@ The data consists of twelve libraries treated under two different \textcolor{red
 * [Combining Gene Ontology (GO) and differential expressed genes (DEG)](#17)  
 
 <a name="1"/>
-## Quality filtering using Trimmomatic<sup>&#9653;</sup>
+> ## Quality filtering using Trimmomatic<sup>&#9653;</sup>
 
 The following script performs quality trimming on the Illumina libraries with the program [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) using a quality cut-off of 15 in a 4-bp sliding window, discarding any reads under 36 bp. Only paired, trimmed reads were used in downstream scripts.
 
@@ -52,9 +52,9 @@ fastx_trimmer -f 12 -i "$i"_2_trimmed.fq -o trimmomatic_minus12/"$i"_2.fq -Q33
 done
 
 ```
-
-## De novo assembling the Illumina reads<sup>&#9653;</sup> 
 <a name="2"/>
+## De novo assembling the Illumina reads<sup>&#9653;</sup> 
+
 We assembled all four quality-filtered Illumina libraries into a single pooled assembly using [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki). We use a minimum length cutoff value of 400 bp. Assembly statistics are presented in the table hereafter.
 
 
