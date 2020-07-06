@@ -28,9 +28,8 @@ The data consists of twelve libraries treated under two different \textcolor{red
 * [Creating an input file suitable for functional annotation](#16)  
 * [Combining Gene Ontology (GO) and differential expressed genes (DEG)](#17)  
 
-## Test
-<a name="1"/>
 ## Quality filtering using Trimmomatic<sup>&#9653;</sup>
+<a name="1"/>
 
 The following script performs quality trimming on the Illumina libraries with the program [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) using a quality cut-off of 15 in a 4-bp sliding window, discarding any reads under 36 bp. Only paired, trimmed reads were used in downstream scripts.
 
