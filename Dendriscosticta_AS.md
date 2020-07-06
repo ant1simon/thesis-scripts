@@ -148,7 +148,7 @@ TransDecoder.Predict -t ../trinity/AStotal/Trinity.fasta --retain_pfam_hits pfam
 
 ```
 
-<a name="3"/>
+<a name="4"/>
 
 ## Aligning the translated ORFs against the protein database<sup>&#9653;</sup>
 
@@ -164,7 +164,7 @@ diamond blastp -d ~/tempdata3/antoine/nt_diamond/nr -q /home/CAM/asimon/transdec
 
 ```
 
-<a name="4"/>
+<a name="5"/>
 
 ## Formatting the outputs
 
@@ -191,7 +191,7 @@ sed -E 's/^[^:]*::[^:]*::([^:]*)::m\.[0-9]*/\1/g' diamond_ALL2.txt > Diamond_int
 
 ```
 
-<a name="5"/>
+<a name="6"/>
 
 ## Retrieving the longest transcripts<sup>&#9653;</sup>
 
@@ -281,7 +281,7 @@ infile.close()
 OUT.close()
 ```
 
-<a name="6"/>
+<a name="7"/>
 
 ## Pulling out the ORF labels that match the longest transcripts<sup>&#9653;</sup>
 
@@ -383,7 +383,7 @@ infile.close()
 OUT.close()
 ```
 
-<a name="7"/>
+<a name="8"/>
 
 ## Retrieving the optimal ORFs<sup>&#9653;</sup>
 
@@ -541,7 +541,7 @@ OUT.close()
 OUT1.close()
 ```
 
-<a name="8"/>
+<a name="9"/>
 
 ## Generating a file with the optimal non-translated transcripts<sup>&#9653;</sup>
 
@@ -562,7 +562,7 @@ rm Trinity_1_modif.fasta
 
 ```
 
-<a name="9"/>
+<a name="10"/>
 
 ## Generating transcriptome-specific abundance estimates<sup>&#9653;</sup>
 
@@ -607,7 +607,7 @@ done
 
 ```
 
-<a name="10"/>
+<a name="11"/>
 
 ## Obtaining the "total transcript reads" counts per transcript
 
@@ -675,7 +675,7 @@ write.table(sorted11, "results_AS11.txt", sep = "\t", row.names = FALSE, col.nam
 write.table(sorted12, "results_AS12.txt", sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 ```
 
-<a name="11"/>
+<a name="12"/>
 
 ## Combining total read counts and DIAMOND output
 
@@ -708,7 +708,7 @@ paste best_ORF_by_evalue_sorted.txt all_results.tsv > best_ORF_by_evalue_eXpress
 
 ```
 
-<a name="12"/>
+<a name="13"/>
 
 ## Translating taxid numbers into lineages
 
@@ -761,7 +761,7 @@ f.close()
 OutFile.close()
 ```
 
-<a name="13"/>
+<a name="14"/>
 
 ## Creating taxonomic subsets
 
@@ -840,7 +840,7 @@ done
 
 ```
 
-<a name="14"/>
+<a name="15"/>
 
 ## Performing differential expression analysis
 
@@ -1206,7 +1206,7 @@ plot(q)
 # ggplotly(q)
 ```
 
-<a name="15"/>
+<a name="16"/>
 
 ## Creating an input file suitable for functional annotation
 
@@ -1230,7 +1230,7 @@ tail -n2 Diamond_b2g_CDS.xml >> AS/Diamond_b2g_CDS_fungi.xml
 grep -w 'Iteration_query\-def\|Hsp_qseq' Diamond_b2g_CDS_fungi.xml | sed 's/<Iteration_query\-def>/>/g' | sed 's/<\/Iteration_query\-def>//g' | sed 's/<Hsp_qseq>//g' | sed 's/<\/Hsp_qseq>//g' >> b2g_fungi.fasta
 ```
 
-<a name="16"/>
+<a name="17"/>
 
 ## Combining Gene Ontology (GO) and differential expressed genes (DEG)
 
@@ -1370,5 +1370,5 @@ draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="ri
 dev.off()
 ```
 
-![](/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/Notebook_AS/Fungi/heatmap.png)
+![](Dendriscosticta_AS_files/figure-html/heatmap.png)<!-- -->
 
