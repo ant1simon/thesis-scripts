@@ -1,17 +1,8 @@
-% title TEst
-% author(s) YO; Xo; ZZ
-% date w
-
 ---
 title: "The dual nature of lichens: a transcriptomic approach to understand photomorphism"
 author: "Antoine Simon, Bernard Goffinet, Dan Vanderpool, Emmanuël Sérusiaux, Toby Spribille"
 date: "2020 July 06"
-output:
-  html_document:
-    keep_md: true
-    #code_folding: hide
-#For separate figures repace "html_document" by "pdf_document" and remove the following line
----
+...
 
 <style type="text/css">
 
