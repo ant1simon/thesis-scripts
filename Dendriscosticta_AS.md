@@ -4,7 +4,7 @@ This R Markdown file includes 17 scripts used namely for collapsing and filterin
 
 Some steps require a great deal of memory (RAM) and may take a few days to run. A computer cluster with high memory nodes was used for several scripts; these steps are denoted by the symbol "&#9653;".
 
-The data consists of twelve libraries treated under two different \textcolor{red}{red} conditions and using an **poly(A) RNA selection** protocol:
+The data consists of twelve libraries treated under two different conditions and using an **poly(A) RNA selection** protocol:
 
 * Cyanomorph (AS1, AS2, AS8, AS9, AS11, AS12)
 * Chloromorph (AS3, AS4, AS5, AS6, AS7, AS10)
