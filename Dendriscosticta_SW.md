@@ -1,49 +1,6 @@
----
-title: "The dual nature of lichens: a transcriptomic approach to understand photomorphism"
-author: "Antoine Simon, Bernard Goffinet, Dan Vanderpool, Emmanuël Sérusiaux, Toby Spribille"
-date: "2020 July 06"
-output:
-  html_document:
-    keep_md: true
----
+# The dual nature of lichens: a transcriptomic approach to understand photomorphism
 
-<style type="text/css">
-
-body{ /* Normal  */
-      font-size: 13px;
-  }
-td {  /* Table  */
-  font-size: 8px;
-}
-h1.title {
-  font-size: 38px;
-  color: Teal;
-  font-family: "Coolvetica";
-}
-h1 { /* Header 1 */
-  font-size: 22px;
-  color: Teal;
-  font-family: "Coolvetica";
-}
-h2 { /* Header 2 */
-  font-size: 20px;
-  color: DarkBlue;
-  font-family: "Coolvetica";
-}
-h3 { /* Header 3 */
-  font-size: 16px;
-  color: DarkBlue;
-  font-family: "Times New Roman";
-}
-code.r{ /* Code block */
-    font-size: 12px;
-}
-pre { /* Code block - determines code spacing between lines */
-    font-size: 14px;
-}
-</style>
-
-This R Markdown file includes X scripts used for collapsing and filtering [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) transcripts that have been analyzed using [Transdecoder](https://github.com/TransDecoder/TransDecoder) to derive protein (ORF) predictions, analyzed using [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [eXpress](https://pachterlab.github.io/eXpress/) to generate transcriptome-specific abundance estimates. Finally, differential expression between photomorphs was analyzed using [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). All these steps are succintly described in Materials and Methods of the above paper.
+This R Markdown file includes 18 scripts used for collapsing and filtering [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) transcripts that have been analyzed using [Transdecoder](https://github.com/TransDecoder/TransDecoder) to derive protein (ORF) predictions, analyzed using [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [eXpress](https://pachterlab.github.io/eXpress/) to generate transcriptome-specific abundance estimates. Finally, differential expression between photomorphs was analyzed using [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). All these steps are succintly described in Materials and Methods of the above paper.
 
 Some steps require a great deal of memory (RAM) and may take a few days to run. A computer cluster with high memory nodes was used for several scripts; these steps are denoted by the symbol "&#9653;".
 
@@ -52,7 +9,29 @@ The data consists of four libraries treated under two different \textcolor{red}{
 * Cyanomorph (SW1, SW3)
 * Chloromorph (SW5, SW9)
 
-# Quality filtering using Trimmomatic<sup>&#9653;</sup> 
+## Table of Contents
+* [Quality filtering using Trimmomatic](#1)  
+* [De novo assembling the Illumina reads](#2)  
+* [Identifying the Coding Regions](#3)  
+* [Aligning the translated ORFs against the protein database](#4)  
+* [Formatting the outputs](#5)  
+* [Retrieving the longest transcripts](#6)  
+* [Pulling out the ORF labels that match the longest transcripts](#7)  
+* [Retrieving the optimal ORFs](#8)  
+* [Generating a file with the optimal non-translated transcripts](#9)  
+* [Generating transcriptome-specific abundance estimates](#10)  
+* [Obtaining the “total transcript reads” counts per transcript](#11)  
+* [Combining total read counts and DIAMOND output](#12)  
+* [Translating taxid numbers into lineages](#13)  
+* [Creating taxonomic subsets](#14)  
+* [Performing differential expression analysis](#15)  
+* [Plotting the abundance values of all Rhizobiales transcripts](#16)  
+* [Creating an input file suitable for functional annotation](#17)  
+* [Combining Gene Ontology (GO) and differential expressed genes (DEG)](#18)  
+
+<a name="1"/>
+
+## Quality filtering using Trimmomatic<sup>&#9653;</sup> 
 
 The following script performs quality trimming on the Illumina libraries with the program [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) using a quality cut-off of 30 in a 4-bp sliding window, discarding any reads under 36 bp. Only paired, trimmed reads were used in downstream scripts.
 
@@ -91,7 +70,9 @@ echo "[sw9]" $result_Sw9
 ```
 
 
-# De novo assembling the Illumina reads<sup>&#9653;</sup> 
+<a name="2"/>
+
+## De novo assembling the Illumina reads<sup>&#9653;</sup> 
 
 We assembled all four quality-filtered Illumina libraries into a single pooled assembly using [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki). We use a minimum length cutoff value of 400 bp. Assembly statistics are presented in the table hereafter.
 
@@ -118,7 +99,9 @@ cat TrinityStats.txt
 
 ```
 
-# Identifying the Coding Regions<sup>&#9653;</sup>
+<a name="3"/>
+
+## Identifying the Coding Regions<sup>&#9653;</sup>
 
 Open reading frames (ORFs) from the pooled transcriptome assembly were calculated using [Transdecoder](https://github.com/TransDecoder/TransDecoder), resulting 231,639 ORFs.
 
@@ -143,7 +126,9 @@ TransDecoder.Predict -t ../trinity_trim_Sw_all/Trinity.fasta --retain_pfam_hits 
 
 ```
 
-# Aligning the translated ORFs against the protein database<sup>&#9653;</sup>
+<a name="4"/>
+
+## Aligning the translated ORFs against the protein database<sup>&#9653;</sup>
 
 Translated ORFs were then blasted against the NCBI non-redundant (nr) database using the [DIAMOND](https://github.com/bbuchfink/diamond) BLASTP search (protein versus protein) in order to generate taxonomic assignments.
 
@@ -157,7 +142,9 @@ diamond blastp  -d ~/tempdata3/antoine/nt_diamond/nr -q ~/sw/transdecoder/Trinit
 
 ```
 
-# Formatting the outputs
+<a name="5"/>
+
+## Formatting the outputs
 
 In the following chunk, the outputs of [DIAMOND](https://github.com/bbuchfink/diamond), [Transdecoder](https://github.com/TransDecoder/TransDecoder) and [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) are slightly modified so that they can be used in the subsequent Python scripts: the two interleaved fasta files are converted into single line fasta files, and the identifiers within the Diamond output are shortened. 
 
@@ -182,7 +169,9 @@ sed -E 's/^[^:]*::[^:]*::([^:]*)::m\.[0-9]*/\1/g' Diamond_sw_NEW.txt > Diamond_i
 
 ```
 
-# Retrieving the longest transcripts<sup>&#9653;</sup>
+<a name="6"/>
+
+## Retrieving the longest transcripts<sup>&#9653;</sup>
 
 The three following Python scripts aim to retrieve the transcripts with the highest e-value over all ORFs or the first ORF with a blast e-value of zero on the longest splicing isoform per contig (modified versions from [Spribille *et al.* 2016](https://science.sciencemag.org/content/353/6298/488)).
 If you happen to use these chunks of code in your research, please cite the following paper:
@@ -268,7 +257,9 @@ infile.close()
 OUT.close()
 ```
 
-# Pulling out the ORF labels that match the longest transcripts<sup>&#9653;</sup>
+<a name="7"/>
+
+## Pulling out the ORF labels that match the longest transcripts<sup>&#9653;</sup>
 
 In the following script, we retrieve all the ORF labels that match the longest transcripts based on a list of ORF identifiers (e.g., the output by [Transdecoder](https://github.com/TransDecoder/TransDecoder)) and a list of the longest transcripts per [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) component (e.g., the output of the previous script).
 
@@ -368,7 +359,9 @@ infile.close()
 OUT.close()
 ```
 
-# Retrieving the optimal ORFs<sup>&#9653;</sup>
+<a name="8"/>
+
+## Retrieving the optimal ORFs<sup>&#9653;</sup>
 
 This script takes the output of a blastp query of [Transdecoder](https://github.com/TransDecoder/TransDecoder) predicted proteins and matches up [DIAMOND](https://github.com/bbuchfink/diamond) results with the ORF list produced in the previous script, leaving only the ORF with the best e-value or the first ORF per transcript to have an e-value of zero.
 
@@ -524,7 +517,9 @@ OUT.close()
 OUT1.close()
 ```
 
-# Generating a file with the optimal non-translated transcripts<sup>&#9653;</sup>
+<a name="9"/>
+
+## Generating a file with the optimal non-translated transcripts<sup>&#9653;</sup>
 
 Below is a short shell script used to recover all the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) sequences that match the list of identifiers generated in the previous set of Python scripts. The output is a fasta file which only includes the transcripts with the highest e-value over all ORFs or the first ORF with a blast e-value of zero on the longest splicing isoform per contig. This file will be used in the next section to obtain counts of differential expression for each transcriptome.
 
@@ -543,7 +538,9 @@ rm Trinity_1_modif.fasta
 
 ```
 
-# Generating transcriptome-specific abundance estimates
+<a name="10"/>
+
+## Generating transcriptome-specific abundance estimates
 
 Transcriptome-specific abundance estimates are obtained through four sequential steps:
 
@@ -581,7 +578,9 @@ done
 
 ```
 
-# Obtaining the "total transcript reads" counts per transcript
+<a name="11"/>
+
+## Obtaining the "total transcript reads" counts per transcript
 
 Here, the [eXpress](https://pachterlab.github.io/eXpress/) output is formatted	for	use	in the subsequent [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) analysis for fold change estimation. The below R script produces total read count files, which will be used in analyzing the differential expression between photomorph types.
 
@@ -613,7 +612,9 @@ write.table(sorted3, "results_sw5.txt", sep = "\t", row.names = FALSE, col.names
 write.table(sorted4, "results_sw9.txt", sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 ```
 
-# Combining total read counts and DIAMOND output
+<a name="12"/>
+
+## Combining total read counts and DIAMOND output
 
 The output of the following shell script is a non-redundant matrix with eXpress total read counts and the various fields of the [DIAMOND](https://github.com/bbuchfink/diamond) blast tabular file. Incidentally, the identifiers of the read count files are simplified.
 
@@ -645,7 +646,9 @@ paste best_ORF_by_evalue_sorted.txt all_results.tsv > best_ORF_by_evalue_eXpress
 
 ```
 
-# Translating taxid numbers into lineages
+<a name="13"/>
+
+## Translating taxid numbers into lineages
 
 The following Python script uses [ETE](https://github.com/etetoolkit/ete)’s *ncbi_taxonomy* module, which namely allows to convert taxid numbers into lineage track information. The output is a modified version of the above-mentioned matrix, with explicit taxonomic lineage for each [DIAMOND](https://github.com/bbuchfink/diamond) blast hit. In case a hit has several taxid numbers, only the first one is considered. Subsets of the matrix can now be extracted based on taxonomic identity and used as input for normalization and differential expression analysis.
 
@@ -697,7 +700,9 @@ f.close()
 OutFile.close()
 ```
 
-# Creating taxonomic subsets
+<a name="14"/>
+
+## Creating taxonomic subsets
 
 Taxon subsets of the matrix were created using the following custom bash script and the lineage track information generated by the previous Python script. Additionally, lineages are converted into a single a taxonomic level. The code can be modified and fine-tuned in order to obtain taxonomic subsets with varying degrees of specificity (i.e., different taxonomic ranks). Rare taxa (i.e., that make up for less than 1 percent of the total) are merged into a single category named "Others".
 
@@ -827,7 +832,9 @@ done
 
 ```
 
-# Performing differential expression analysis
+<a name="15"/>
+
+## Performing differential expression analysis
 
 Differential expression between the photomorph types, which can also reflect dissimilar cell abundances, was assessed using the Bioconductor package [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) and Fisher's exact test. In each putative taxonomic subset, only transcripts with counts per million (CPM) of 20 or greater for at least two samples were included in the analysis. Additionally, samples were clustered in a multidimensional scaling plot (MDS) using the plotMDS function implemented in the Bioconductor package [limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html) in order to assess the adequacy of the differential expression analyses.
 
@@ -1419,7 +1426,9 @@ plot(q)
 # ggplotly(q)
 ```
 
-# Plotting the abundance values of all Rhizobiales transcripts
+<a name="16"/>
+
+## Plotting the abundance values of all Rhizobiales transcripts
 
 The following chunks allow to build violin plots representing abundance values (based on total read counts estimated by [eXpress](https://pachterlab.github.io/eXpress/)) of all Rhizobiales transcripts of all four metatranscriptomes arranged by the number of individual metatranscriptomes in which they were recorded (i.e., four rows). Each individual plot shows sample (x) plotted against log mean abundance per transcript (y).
 
@@ -1580,7 +1589,11 @@ dev.off()
 ##                 2
 ```
 
-# Creating an input file suitable for functional annotation
+![](Dendriscosticta_SW_files/figure-html/violin.pdf)<!-- -->
+
+<a name="17"/>
+
+## Creating an input file suitable for functional annotation
 
 The Blast2GO methodology as implemented in [OmicsBox](https://www.biobam.com/omicsbox) was used to assign Gene Ontology (GO) terms to the transcripts.
 But first, the DIAMOND blast results had to be generated in XML format, so that they can be directly loaded into the GUI.
@@ -1594,11 +1607,11 @@ diamond blastx -d ~/tempdata3/antoine/nt_diamond/nr -q ~/sw/transdecoder/Trinity
 for n in `cat sw/header_fungi.txt `; do LC_ALL=C fgrep "$n:" sw/Diamond_b2g_CDS.xml -B3 -A43 ; done > sw/Diamond_b2g_CDS_fungi.xml
 ```
 
-# Combining Gene Ontology (GO) and differential expressed genes (DEG) {.tabset .tabset-fade}
+<a name="18"/>
+
+## Combining Gene Ontology (GO) and differential expressed genes (DEG) {.tabset .tabset-fade}
 
 The following script was used to combine the results of the GO enrichment and DEG analyses by building a heatmap displaying the most specific enriched Gene Ontology (GO) terms identified for statistically-significant fungal transcripts. Enriched terms and transcripts are organized by hierarchical clustering. DEG significance scores correspond to the logarithm of the fold change (logFC) between photomorphs (down: chloromorphs; up: cyanomorphs). GO term significance scores correspond the negative logarithm of P-values evaluating the significance of GO terms.
-
-### Fungi
 
 
 ```r
@@ -1732,4 +1745,4 @@ draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="ri
 dev.off()
 ```
 
-![](/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Fungi/heatmap.png)
+![](Dendriscosticta_SW_files/figure-html/heatmap.png)<!-- -->
