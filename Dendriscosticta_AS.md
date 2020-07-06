@@ -2,7 +2,7 @@
 title: "The dual nature of lichens: a transcriptomic approach to understand photomorphism"
 author: "Antoine Simon, Bernard Goffinet, Dan Vanderpool, Emmanuël Sérusiaux, Toby Spribille"
 date: "2020 July 06"
-...
+---
 
 <style type="text/css">
 
