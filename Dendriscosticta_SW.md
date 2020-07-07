@@ -1606,7 +1606,7 @@ for n in `cat sw/header_fungi.txt `; do LC_ALL=C fgrep "$n:" sw/Diamond_b2g_CDS.
 
 <a name="18"/>
 
-## Combining Gene Ontology (GO) and differential expressed genes (DEG) {.tabset .tabset-fade}
+## Combining Gene Ontology (GO) and differential expressed genes (DEG)
 
 The following script was used to combine the results of the GO enrichment and DEG analyses by building a heatmap displaying the most specific enriched Gene Ontology (GO) terms identified for statistically-significant fungal transcripts. Enriched terms and transcripts are organized by hierarchical clustering. DEG significance scores correspond to the logarithm of the fold change (logFC) between photomorphs (down: chloromorphs; up: cyanomorphs). GO term significance scores correspond the negative logarithm of P-values evaluating the significance of GO terms.
 
