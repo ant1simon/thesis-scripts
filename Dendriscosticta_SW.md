@@ -80,9 +80,6 @@ We assembled all four quality-filtered Illumina libraries into a single pooled a
 ```bash
 #!/bin/bash
 module load trinity/2.6.6
-module load bowtie2/2.3.3.1
-module load samtools
-module load perl/5.28.1 
 
 cd sw
 
