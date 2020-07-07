@@ -64,9 +64,6 @@ We assembled all four quality-filtered Illumina libraries into a single pooled a
 ```bash
 # bash
 module load trinity/2.6.6
-module load bowtie2/2.3.3.1
-module load samtools
-module load perl/5.28.1 
 
 Trinity --seqType fq --left trimmomatic_minus12/AS1_1.fq,trimmomatic_minus12/AS2_1.fq,trimmomatic_minus12/AS3_1.fq,trimmomatic_minus12/AS4_1.fq,trimmomatic_minus12/AS5_1.fq,trimmomatic_minus12/AS6_1.fq,trimmomatic_minus12/AS7_1.fq,trimmomatic_minus12/AS8_1.fq,trimmomatic_minus12/AS9_1.fq,trimmomatic_minus12/AS10_1.fq,trimmomatic_minus12/AS11_1.fq,trimmomatic_minus12/AS12_1.fq --right trimmomatic_minus12/AS1_2.fq,trimmomatic_minus12/AS2_2.fq,trimmomatic_minus12/AS3_2.fq,trimmomatic_minus12/AS4_2.fq,trimmomatic_minus12/AS5_2.fq,trimmomatic_minus12/AS6_2.fq,trimmomatic_minus12/AS7_2.fq,trimmomatic_minus12/AS8_2.fq,trimmomatic_minus12/AS9_2.fq,trimmomatic_minus12/AS10_2.fq,trimmomatic_minus12/AS11_2.fq,trimmomatic_minus12/AS12_2.fq --CPU 16 --output trinity/AStotal --min_contig_length 300 --JM 250G
 
