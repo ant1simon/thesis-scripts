@@ -37,7 +37,7 @@ The following script performs quality trimming on the Illumina libraries with th
 
 
 ```bash
-#!/bin/bash
+# bash
 for i in "Sw1" "Sw3" "Sw5" "Sw9"; 
 do
 java -jar $Trimmomatic \
@@ -54,7 +54,7 @@ Here is a summary of the quality trimming process:
 
 
 ```bash
-#!/bin/bash
+# bash
 
 
 result_Sw1=$(grep -A1 'Sw1_1_new.fq' trimmomatic_output.txt | grep -v "Sw1_1_new.fq")
@@ -78,7 +78,7 @@ We assembled all four quality-filtered Illumina libraries into a single pooled a
 
 
 ```bash
-#!/bin/bash
+# bash
 module load trinity/2.6.6
 
 cd sw
@@ -90,7 +90,7 @@ Then, *TrinityStats.pl*, a utility program provided with [Trinity](https://githu
 
 
 ```bash
-#!/bin/bash
+# bash
 
 cat TrinityStats.txt
 
@@ -104,7 +104,7 @@ Open reading frames (ORFs) from the pooled transcriptome assembly were calculate
 
 
 ```bash
-#!/bin/bash
+# bash
 
 module load /isg/shared/modulefiles/TransDecoder/3.0.1
 module load /isg/shared/modulefiles/hmmer/3.1b2
@@ -131,7 +131,7 @@ Translated ORFs were then blasted against the NCBI non-redundant (nr) database u
 
 
 ```bash
-#!/bin/sh
+# bash
 
 module load /isg/shared/modulefiles/diamond/0.9.9
 
@@ -147,7 +147,7 @@ In the following chunk, the outputs of [DIAMOND](https://github.com/bbuchfink/di
 
 
 ```bash
-#!/bin/bash
+# bash
 
 cd /Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/
 
@@ -179,7 +179,7 @@ The following script retrieves the longest transcript (splicing isoform) from a 
 
 
 ```python
-#!/usr/bin/env python
+# python script
 
 #The input file should look like the following (or the script can be modified to take some variation thereof):
 # [stripped out fasta headers:]
@@ -262,7 +262,7 @@ In the following script, we retrieve all the ORF labels that match the longest t
 
 
 ```python
-#!/usr/bin/env python!/usr/bin/env python
+# python script
 
 #The input file should look like the following (or the script can be modified to take some variation thereof):
 # [stripped out fasta headers:]
@@ -364,6 +364,8 @@ This script takes the output of a blastp query of [Transdecoder](https://github.
 
 
 ```python
+# python script
+
 #The input formats should be like:
 # [Blast fmt6 output file with taxid annotation (last column)]
 #
@@ -522,6 +524,7 @@ Below is a short shell script used to recover all the [Trinity](https://github.c
 
 
 ```bash
+# bash
 
 cut -f1 best_ORF_by_evalue.txt > best_ORF_list.txt
 
@@ -548,6 +551,7 @@ Transcriptome-specific abundance estimates are obtained through four sequential 
 
 
 ```bash
+# bash
 
 module load express
 module load bowtie2/2.3.3.1
@@ -583,6 +587,8 @@ Here, the [eXpress](https://pachterlab.github.io/eXpress/) output is formatted	f
 
 
 ```r
+# R script
+
 setwd("~/Documents/Dendriscosticta/transcriptomics/NoteBook/")
 
 #Import eXpress files
@@ -617,7 +623,7 @@ The output of the following shell script is a non-redundant matrix with eXpress 
 
 
 ```bash
-#!/bin/bash
+# bash
 
 for i in "sw1" "sw3" "sw5" "sw9"; 
 do
@@ -651,7 +657,7 @@ The following Python script uses [ETE](https://github.com/etetoolkit/ete)’s *n
 
 
 ```python
-#! /usr/bin/env python
+# python script
 
 from ete3 import NCBITaxa
 ncbi = NCBITaxa()
@@ -705,7 +711,7 @@ Taxon subsets of the matrix were created using the following custom bash script 
 
 
 ```bash
-
+# bash
 
 mkdir Bacteria-no-cyano/
 cd Bacteria-no-cyano
@@ -764,7 +770,7 @@ cut -f1 best_ORF_by_evalue_eXpress_taxname.txt > identifier.txt
 
 
 ```bash
-
+# bash
 
 for i in "Rhizobiales" "Ascomycota" "Lecanoromycetes" "Methylobacteriaceae" "Bacteria" "root" "Fungi"; 
 do
@@ -839,6 +845,8 @@ Differential expression between the photomorph types, which can also reflect dis
 
 
 ```r
+R script
+
 directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Fungi/"
 outputPrefix <- "edgeR"
 setwd(directory)
@@ -1152,6 +1160,8 @@ plot(q)
 
 
 ```r
+R script
+
 directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Bacteria-no-cyano/"
 
 outputPrefix <- "edgeR"
@@ -1431,7 +1441,7 @@ The following chunks allow to build violin plots representing abundance values (
 
 
 ```python
-#! /usr/bin/env python
+# python script
 
 
 import re
@@ -1487,6 +1497,8 @@ with file('Rhizobiales/binary-sw.txt', 'w') as modified: modified.write("Sw1\tSw
 
 
 ```r
+# R script
+
 directory <- "~/Documents/Dendriscosticta/transcriptomics/NoteBook/Rhizobiales/"
 setwd(directory)
 
@@ -1544,29 +1556,19 @@ d.long.df <- gather(d,            # data frame name
                     # old columns to be gathered:
                     Sw1, Sw3, Sw5, Sw9)
 
-#d.long.df <- mutate(d.long.df, transcript_wSNPs = ifelse(is.na(transcript_wSNPs), 0, transcript_wSNPs))
 d.long.df <- filter(d.long.df, !freq=="0")  
 
-#pdf("monster_graph2.pdf", height=8.5, width=11)
-
-
-
-#GOOD
 p<-ggplot(d.long.df, aes(sample, log10(transcript_abundance_values), color=sample)) +
-  # geom_point(position = "jitter", alpha = 0.005)+
-  #scale_colour_manual(values=c("red", "grey10"))+
   theme(axis.text.y = element_text(size = rel(0.5)))+
   theme(axis.text.x = element_text(size = rel(1), angle = 90))+
   facet_grid(rows = vars(freq))  + 
    geom_violin(scale = "count") +
-  #eliminates background, gridlines, and chart border
   theme(
     plot.background = element_blank()
     ,panel.grid.major = element_blank()
     ,panel.grid.minor = element_blank()
     ,panel.border = element_blank()
   ) + 
- # geom_boxplot(width=0.1, fill="white")+
   theme_minimal()
 
 pdf("violin.pdf", height=5, width=7)
@@ -1597,6 +1599,8 @@ But first, the DIAMOND blast results had to be generated in XML format, so that 
 
 
 ```r
+# R script
+
 module load /isg/shared/modulefiles/diamond/0.9.9
 
 diamond blastx -d ~/tempdata3/antoine/nt_diamond/nr -q ~/sw/transdecoder/Trinity.fasta.transdecoder.cds  -o ~/sw/Diamond_b2g_CDS.xml --taxonmap ~/home/antoine_simon/database/prot.accession2taxid.gz -e 1e-6 -p 8 -f 5 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids -k 1
@@ -1612,6 +1616,8 @@ The following script was used to combine the results of the GO enrichment and DE
 
 
 ```r
+# R script
+
 #This chunk mostly follows the script written by Kevin Blighe on https://www.biostars.org/p/299161/ 
 
 directory <- "/Users/antoinesimon/Documents/Dendriscosticta/transcriptomics/NoteBook/Fungi/"
