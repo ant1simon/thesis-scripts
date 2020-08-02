@@ -1036,7 +1036,7 @@ colors <- rep(c("green4", "blue4"), 2)
 plotMDS(d, method="bcv", col=colors[d$samples$group])
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-1.png)<!-- -->
+![](Figures/edgeR_Fungi-1.png)<!-- -->
 
 ```r
 #Estimating the Dispersion
@@ -1072,7 +1072,7 @@ names(d1)
 plotBCV(d1)
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-2.png)<!-- -->
+![](Figures/edgeR_Fungi-2.png)<!-- -->
 
 ```r
 #Differential Expression
@@ -1115,7 +1115,7 @@ plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-3.png)<!-- -->
+![](Figures/edgeR_Fungi-3.png)<!-- -->
 
 ```r
 # P-values , 0.05
@@ -1124,7 +1124,7 @@ plotSmear(et12, de.tags=de1tags12, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-4.png)<!-- -->
+![](Figures/edgeR_Fungi-4.png)<!-- -->
 
 ```r
 n <- 19
@@ -1149,7 +1149,7 @@ q <- p + theme_bw() +
 plot(q)
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Fungi-5.png)<!-- -->
+![](Figures/edgeR_Fungi-5.png)<!-- -->
 
 ```r
 # Uncomment for interactive graphs:
@@ -1313,7 +1313,7 @@ colors <- rep(c("green4", "blue4"), 2)
 plotMDS(d, method="bcv", col=colors[d$samples$group])
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-1.png)<!-- -->
+![](Figures/edgeR_Bacteria-1.png)<!-- -->
 
 ```r
 #Estimating the Dispersion
@@ -1349,7 +1349,7 @@ names(d1)
 plotBCV(d1)
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-2.png)<!-- -->
+![](Figures/edgeR_Bacteria-2.png)<!-- -->
 
 ```r
 #Differential Expression
@@ -1392,7 +1392,7 @@ plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-3.png)<!-- -->
+![](Figures/edgeR_Bacteria-3.png)<!-- -->
 
 ```r
 # P-values , 0.05
@@ -1401,7 +1401,7 @@ plotSmear(et12, de.tags=de1tags12, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-4.png)<!-- -->
+![](Figures/edgeR_Bacteria-4.png)<!-- -->
 
 ```r
 n <- 19
@@ -1426,7 +1426,7 @@ q <- p + theme_bw() +
 plot(q)
 ```
 
-![](Dendriscosticta_SW_files/figure-html/edgeR_Bacteria-5.png)<!-- -->
+![](Figures/edgeR_Bacteria-5.png)<!-- -->
 
 ```r
 # Uncomment for interactive graphs:
@@ -1588,7 +1588,7 @@ dev.off()
 ##                 2
 ```
 
-![](Dendriscosticta_SW_files/figure-html/violins.png)<!-- -->
+![](Figures/violins.png)<!-- -->
 
 <a name="17"/>
 
@@ -1748,4 +1748,4 @@ draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="ri
 dev.off()
 ```
 
-![](Dendriscosticta_SW_files/figure-html/heatmap.png)<!-- -->
+![](Figures/heatmap.png)<!-- -->
