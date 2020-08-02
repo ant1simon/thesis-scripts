@@ -1065,7 +1065,7 @@ colors <- rep(c("green4", "blue4"), 2)
 plotMDS(d, method="bcv", col=colors[d$samples$group],  labels = NULL, pch =1)
 ```
 
-![](Dendriscosticta_AS_files/figure-html/edgeR-1.png)<!-- -->
+![](Figures/edgeR-1.png)<!-- -->
 
 ```r
 #Estimating the Dispersion
@@ -1101,7 +1101,7 @@ names(d1)
 plotBCV(d1)
 ```
 
-![](Dendriscosticta_AS_files/figure-html/edgeR-2.png)<!-- -->
+![](Figures/edgeR-2.png)<!-- -->
 
 ```r
 #Differential Expression
@@ -1162,7 +1162,7 @@ plotSmear(et12, de.tags=Tax_unlisted, cex=0.7, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_AS_files/figure-html/edgeR-3.png)<!-- -->
+![](Figures/edgeR-3.png)<!-- -->
 
 ```r
 # P-values , 0.05
@@ -1171,7 +1171,7 @@ plotSmear(et12, de.tags=de1tags12, cex=0.48, col="grey")
 abline(h = c(-2, 2), col = "blue")
 ```
 
-![](Dendriscosticta_AS_files/figure-html/edgeR-4.png)<!-- -->
+![](Figures/edgeR-4.png)<!-- -->
 
 ```r
 n <- 21
@@ -1196,7 +1196,7 @@ q <- p + theme_bw() +
 plot(q)
 ```
 
-![](Dendriscosticta_AS_files/figure-html/edgeR-5.png)<!-- -->
+![](Figures/edgeR-5.png)<!-- -->
 
 ```r
 # Uncomment for interactive graphs:
@@ -1367,5 +1367,5 @@ draw(hmapGSEA + haGenes, heatmap_legend_side="right", annotation_legend_side="ri
 dev.off()
 ```
 
-![](Dendriscosticta_AS_files/figure-html/heatmap.png)<!-- -->
+![](Figures/heatmap.png)<!-- -->
 
