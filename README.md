@@ -10,8 +10,8 @@ The folder `Videos` includes two supplementary videos mentionned in __Section 2.
 
 The dataset consists of twelve libraries treated under two different conditions and using an **poly(A) RNA selection** protocol (i.e., referred to as dataset **AS** in this chapter):
 
-* Cyanomorph (AS1, AS2, AS8, AS9, AS11, AS12)
-* Chloromorph (AS3, AS4, AS5, AS6, AS7, AS10)
+* :blue_heart: Cyanomorph (AS1, AS2, AS8, AS9, AS11, AS12)
+* :green_heart: Chloromorph (AS3, AS4, AS5, AS6, AS7, AS10)
 
 The R Markdown `AS/scripts.md` file includes 17 scripts used namely for collapsing and filtering [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) transcripts that have been analyzed using [Transdecoder](https://github.com/TransDecoder/TransDecoder) to derive protein (ORF) predictions, analyzed using [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [eXpress](https://pachterlab.github.io/eXpress/) to generate transcriptome-specific abundance estimates. Finally, differential expression between photomorphs was analyzed using [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). All these steps are succintly described in __Section 2.2__.
 
@@ -26,8 +26,8 @@ Additionally, the `AS` folder contains four supplementary tables:
 
 The data consists of four libraries treated under two different conditions and using an **rRNA depletion** protocol (i.e., referred to as dataset **SW** in this chapter):
 
-* Cyanomorph (SW1, SW3)
-* Chloromorph (SW5, SW9)
+* :blue_heart: Cyanomorph (SW1, SW3)
+* :green_heart: Chloromorph (SW5, SW9)
 
 The R Markdown `SW/scripts.md` file includes 18 scripts used for collapsing and filtering [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) transcripts that have been analyzed using [Transdecoder](https://github.com/TransDecoder/TransDecoder) to derive protein (ORF) predictions, analyzed using [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [eXpress](https://pachterlab.github.io/eXpress/) to generate transcriptome-specific abundance estimates. Finally, differential expression between photomorphs was analyzed using [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). All these steps are succintly described in __Section 2.2__.
 
