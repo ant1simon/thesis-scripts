@@ -15,8 +15,8 @@ This R Markdown `AS/scripts.md` file includes 17 scripts used namely for collaps
 Additionally, the `AS` folder contains four supplementary tables:
 
 * `AS/Supplementary_Table_AS1.txt` is a non-redundant matrix with eXpress total read counts and the various fields of the DIAMOND blast tabular file. It corresponds to the output of the [12th script](https://github.com/ant1simon/thesis-supplementary/blob/master/AS/scripts.md#combining-total-read-counts-and-diamond-output).
-* `AS/Supplementary_Table_AS2.txt`
-* `AS/Supplementary_Table_AS3.txt`
+* `AS/Supplementary_Table_AS2.txt` is the table resulting from the [differential expression analysis](https://github.com/ant1simon/thesis-supplementary/blob/master/AS/scripts.md#performing-differential-expression-analysis). Only fungal transcripts with counts per million (CPM) of 20 or greater for at least two samples were included in the analysis. 
+* `AS/Supplementary_Table_AS3.txt` 
 * `AS/Supplementary_Table_AS4.txt`
 
 
