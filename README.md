@@ -4,7 +4,7 @@
 
 The folders `AS` and `SW` contain supplementary material regarding the metatranscriptomic methods and tools described in __Section 2.2__ of the thesis.
 The folder `Videos` includes two supplementary videos mentionned in __Section 2.3.3__ of the thesis.
-% Check chapter number
+
 
 ## AS
 
