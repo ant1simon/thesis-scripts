@@ -4,7 +4,7 @@ This R Markdown file includes 18 scripts used for collapsing and filtering [Trin
 
 Some steps require a great deal of memory (RAM) and may take a few days to run. A computer cluster with high memory nodes was used for several scripts; these steps are denoted by the symbol "&#9653;".
 
-The data consists of four libraries treated under two different \textcolor{red}{red} conditions and using an **rRNA depletion** protocol:
+The data consists of four libraries treated under two different conditions and using an **rRNA depletion** protocol:
 
 * Cyanomorph (SW1, SW3)
 * Chloromorph (SW5, SW9)
