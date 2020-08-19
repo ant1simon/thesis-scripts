@@ -2,14 +2,11 @@
 
 *Online supplementary material from the doctoral thesis of Antoine Simon*
 
-### __Section 2__
 The folders `AS` and `SW` contain supplementary material detailing the metatranscriptomic methods and tools described in __Section 2.2__ of the thesis.
+
 The folder `Videos` includes two supplementary videos mentionned in __Section 2.3.3__.
 
-### __Section 3__
-
-The file `Supplementary_Table1.xlsx` corresponds to the supplementary material mentionned in __Section 3__:
-*Specimens used in the phylogenetic analyses including voucher information and GenBank accession numbers for the four sampled loci: the nuclear ribosomal internal transcribed spacer region (ITS), the RNA polymerase II largest subunit (RPB1), the translation elongation factor-1 alpha gene (EF1-α), and the DNA replication licensing factor (MCM7). Accession numbers of newly generated sequences are in bold. Voucher specimens are deposited at CONN, FH, G, H, KoLRI, LE, LG, TNS, and UBC (putative duplicates at herbaria cited in the main document). Results of the chemical assessment and the sequence-based species delimitation analyses are indicated. All newly generated sequences were obtained trough Sanger sequencing, except when the DNA number is indicated by an asterisk (in this instance, the sequence was obtained through RNA-seq).*
+The file `Supplementary_Table1.xlsx` corresponds to the supplementary material mentionned in __Section 3__.
 
 ## AS
 
